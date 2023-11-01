@@ -16,18 +16,9 @@ namespace TodoList.Api.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<TaskDTO>> GetTaskList()
+        public async Task<IEnumerable<Entities.Task>> GetTaskList()
         {
-            return await _context.Tasks.Include(x => x.Assigness).Select(x => new TaskDTO()
-            {
-                Id = x.Id,
-                Name = x.Name,
-                AssigneeId = x.AssigneeId,
-                CreateDate = x.CreateDate,
-                Priority = x.Priority,
-                Status = x.Status,
-                AssigneeName = x.Assigness.FirstName +' '+ x.Assigness.LastName,
-            }).ToListAsync();
+            return await _context.Tasks.Include(x => x.Assigness).ToListAsync();
         }
 
         public async Task<Entities.Task> GetById(Guid id)

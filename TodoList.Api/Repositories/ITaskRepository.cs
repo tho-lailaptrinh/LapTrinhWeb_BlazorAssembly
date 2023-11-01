@@ -10,7 +10,7 @@ namespace TodoList.Api.Repositories
 {
     public interface ITaskRepository
     {
-        Task<IEnumerable<TaskDTO>> GetTaskList();
+        Task<IEnumerable<Task>> GetTaskList();
         Task<Task> GetById(Guid id);
         Task<Task> Create(Task task);
         Task<Task> Update(Task task);

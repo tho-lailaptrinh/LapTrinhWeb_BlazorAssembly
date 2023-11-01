@@ -38,8 +38,17 @@ namespace TodoList.Api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TodoList.Api", Version = "v1" });
             });
-
+            services.AddCors(option =>
+            {
+                option.AddPolicy("CorsPolicy",
+                    buiber => buiber.SetIsOriginAllowed((host) => true)
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
+            });  
+            // Khai báo Repository
             services.AddTransient<ITaskRepository, TaskRepository>();
+            services.AddTransient<IUsersRepository, UsersRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,15 +60,12 @@ namespace TodoList.Api
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TodoList.Api v1"));
             }
-
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
+            app.UseCors("CorsPolicy");
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
-            {
+            { 
                 endpoints.MapControllers();
             });
         }

@@ -7,9 +7,8 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using TodoListBlazorAssembly.Service;
 
-namespace TodoListBlazorAssembly
+namespace BlazorApp1
 {
     public class Program
     {
@@ -17,11 +16,8 @@ namespace TodoListBlazorAssembly
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
-            // Khai báo ITaskApiClient 
-            builder.Services.AddTransient<ITaskAPIClient, TaskAPIClient>();
-            builder.Services.AddTransient<IUsersService, UsersService>();
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:5001")});
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
             await builder.Build().RunAsync();
         }
