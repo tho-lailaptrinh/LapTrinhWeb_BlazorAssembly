@@ -1,3 +1,4 @@
+using Blazored.Toast;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,7 +9,6 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using TodoListBlazorAssembly.Service;
-
 namespace TodoListBlazorAssembly
 {
     public class Program
@@ -17,6 +17,7 @@ namespace TodoListBlazorAssembly
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
+            builder.Services.AddBlazoredToast();
             // Khai báo ITaskApiClient 
             builder.Services.AddTransient<ITaskAPIClient, TaskAPIClient>();
             builder.Services.AddTransient<IUsersService, UsersService>();

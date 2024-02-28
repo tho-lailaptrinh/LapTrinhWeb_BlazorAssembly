@@ -11,11 +11,11 @@ namespace TodoList.Model
 {
     public class TaskCreateRequest
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid(); // khi khởi tạo, sẽ nhận giá trị mặc định
 
         [Required]
         [MaxLength(200)]
         public string Name { get; set; }
-        public Priority Priority { get; set; }
+        public Priority? Priority { get; set; }
     }
 }

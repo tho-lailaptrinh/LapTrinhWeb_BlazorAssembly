@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazored.Toast.Services;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -14,6 +17,7 @@ namespace TodoListBlazorAssembly.Pages
     {
         [Inject] private ITaskAPIClient taskAPIClient { get; set; }
         [Inject] private IUsersService usersService { get; set; }
+        [Inject] private IToastService toastService { get; set; }
 
         private List<TaskDTO> taskDTOs;
 
@@ -24,15 +28,15 @@ namespace TodoListBlazorAssembly.Pages
         private List<AssigneeDto> Assignees;
         protected override async Task OnInitializedAsync()  
         {
-            taskDTOs = await taskAPIClient.GetTaskList();
+            taskDTOs = await taskAPIClient.GetTaskList(TaskListSearches);
             Assignees = await usersService.GetAssignee();
         }
-        // Tạo Model search cho From
-        public class TaskListSearch
+        private async Task SearchForm(EditContext context)
         {
-            public string Name { get; set; }
-            public Guid AssigneeId { get; set; }
-            public Priority Priority { get; set; }
+            toastService.ShowInfo("Search completed","Info");
+            taskDTOs = await taskAPIClient.GetTaskList(TaskListSearches);
         }
+        // Tạo Model search cho From
+       
     }
 }

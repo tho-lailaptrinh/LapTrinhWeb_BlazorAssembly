@@ -19,11 +19,11 @@ namespace TodoList.Api.Controllers
         {
             _taskRepository = taskRepository;
         }
-        // api/tasks
+        //api/tasks?name=...?repo?
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] TaskListSearch taskListSearch)
         {
-            var tasks = await _taskRepository.GetTaskList();
+            var tasks = await _taskRepository.GetTaskList(taskListSearch);
             var taskDto = tasks.Select(x => new TaskDTO()
             {
                 Id = x.Id,
@@ -54,7 +54,7 @@ namespace TodoList.Api.Controllers
             });
         }
         [HttpPost]
-        public async Task<IActionResult> Create(TaskCreateRequest request)
+        public async Task<IActionResult> Create([FromBody]TaskCreateRequest request)
         {
             // Nếu dữ liệu gửi lên Post không hợp lệ sẽ trả về lỗi BadRequest
             if (!ModelState.IsValid)
@@ -66,7 +66,7 @@ namespace TodoList.Api.Controllers
             {
                 Id = request.Id,
                 Name = request.Name,
-                Priority = request.Priority,
+                Priority = request.Priority.HasValue ? request.Priority.Value : Priority.Low,
                 CreateDate = DateTime.Now,
                 Status = Status.Open
             });

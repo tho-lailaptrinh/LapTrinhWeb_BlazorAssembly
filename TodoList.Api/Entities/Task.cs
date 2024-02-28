@@ -13,7 +13,7 @@ namespace TodoList.Api.Entities
         [MaxLength(200)]
         public string Name { get; set; }
         public Guid? AssigneeId { get; set; }
-        [ForeignKey(name: "AssigneeId")]
+        [ForeignKey(name: "AssigneeId")]    
         public AppUser Assigness { get; set; }
         public DateTime CreateDate { get; set; }
         public Priority Priority { get; set; }

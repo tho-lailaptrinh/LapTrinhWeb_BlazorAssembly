@@ -1,0 +1,50 @@
+﻿@page "/taskCreate"
+@using TodoList.Model;
+@using TodoList.Model.Enums;
+@using TodoListBlazorAssembly.Service;
+
+@inject ITaskAPIClient TaskAPIClient;
+@inject NavigationManager NavigationManager;
+@inject IToastService ToastService;
+
+<h3>Task Create</h3>
+<EditForm Model="Task" OnValidSubmit="SubmitTask">
+        <DataAnnotationsValidator />
+        <div class="form-group">
+            <label for="Name">Name</label>
+            <InputText class="form-control" @bind-Value="Task.Name"></InputText>
+            <ValidationMessage For="()=>Task.Name"></ValidationMessage>
+            <small id="nameHelp" class="form-text text-muted">Thank you</small>
+        </div>
+
+        <div class="form-group">
+            <label for="Name">Priority</label>
+            <InputSelect class="form-control" @bind-Value="Task.Priority">
+                <option> null </option>
+                @foreach (string item in Enum.GetNames(typeof(Priority)))
+                {
+                    <option value="@item">@item </option>
+                }
+            </InputSelect>
+            <ValidationMessage For="()=>Task.Priority"></ValidationMessage>
+            <small id="nameHelp" class="form-text text-muted">Choose a priority which you want </small>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+
+@code {
+    private TaskCreateRequest Task = new TaskCreateRequest();
+    private async Task SubmitTask(EditContext context)
+    {
+        var result = await TaskAPIClient.CreateTask(Task);
+        if(result == true)
+        {
+            ToastService.ShowSuccess($"{Task.Name} has been created successfully.");
+            NavigationManager.NavigateTo("/TaskList");  
+        }
+        else
+        {
+            ToastService.ShowError($"An error occurred in progress. Please contact to administrator");
+        }
+    }
+}

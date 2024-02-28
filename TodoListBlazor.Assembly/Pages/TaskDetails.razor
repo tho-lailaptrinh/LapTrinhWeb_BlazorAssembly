@@ -5,13 +5,14 @@
 
 @inject ITaskAPIClient TaskAPIClient;
 
+<h3> @TaskId </h3>
 @if(Task == null){
     <LoadingIndicator></LoadingIndicator>
 }
 else
 {
     <h3>TaskDetails @TaskId </h3>
-    <tabke class="table">
+    <table class="table">
         <tr>
             <td>Name</td>
             <td>@Task.Name</td>
@@ -30,7 +31,7 @@ else
             <td>Status</td>
             <td>@Task.Status</td>
         </tr>
-    </tabke>
+    </table>
 }
 
 @code {
